@@ -4,18 +4,16 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Middleware - execute when a route being hit
-// app.use('/posts', () => {
-//   console.log('Middleware');
-// });
+// Middleware
+app.use(express.json());
+
+// Import Routes
+const postsRoute = require('./routes/posts');
+app.use('/posts', postsRoute);
 
 // Routes
 app.get('/', (req, res) => {
   res.send('We are on home!');
-});
-
-app.get('/posts', (req, res) => {
-  res.send('We are on POST!');
 });
 
 // Connect to DB

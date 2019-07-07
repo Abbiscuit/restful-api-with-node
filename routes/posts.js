@@ -28,8 +28,37 @@ router.post('/', async (req, res) => {
 });
 
 // SPECIFIC POST
-router.get('/:post_id', (req, res) => {
-  console.log(req.params.post_id);
+router.get('/:post_id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+    res.json(post);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// DELETE SPECIFIC POST
+router.delete('/:post_id', async (req, res) => {
+  try {
+    const removedPost = await Post.remove({ _id: req.params.post_id });
+    res.json(removedPost);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+//UPDATE SPECIFIC POST
+router.patch('/:post_id', async (req, res) => {
+  try {
+    const updatedPost = await Post.updateOne(
+      { _id: req.params.post_id },
+      { $set: { title: req.body.title } }
+    );
+
+    res.json(updatedPost);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
 module.exports = router;
